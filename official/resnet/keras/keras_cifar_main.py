@@ -161,7 +161,7 @@ def run(flags_obj):
                   optimizer=optimizer,
                   metrics=['categorical_accuracy'])
 
-  time_callback, tensorboard_callback, lr_callback = keras_common.get_callbacks(
+  callbacks = keras_common.get_callbacks(
       learning_rate_schedule, cifar_main.NUM_IMAGES['train'])
 
   train_steps = cifar_main.NUM_IMAGES['train'] // flags_obj.batch_size
@@ -179,10 +179,6 @@ def run(flags_obj):
     tf.keras.backend.set_learning_phase(1)
     num_eval_steps = None
     validation_data = None
-
-  callbacks = [time_callback, lr_callback]
-  if flags_obj.enable_tensorboard:
-    callbacks.append(tensorboard_callback)
 
   history = model.fit(train_input_dataset,
                       epochs=train_epochs,
